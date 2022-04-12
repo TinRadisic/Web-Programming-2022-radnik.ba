@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>radnikba</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
   <style>
     .error{
       color:red;
@@ -53,14 +54,14 @@
        style="background-image: url('slika.jpg'); height: 50vh">
        <form class="d-flex">
          <input class="form-control me-2" type="search" placeholder="Probajte: cleaner" aria-label="">
-         <button class="btn btn-primary btn-outline-light" type="submit" onclick="showMessage()">Pretraži</button>
+         <button class="btn btn-primary btn-outline-light" type="submit">Pretraži</button>
        </form>
 
      </div>
-     <div class="container marketing" style="margin-top:100px;">
+     <div class="container marketing" style="margin-top:30px;">
        <div class="row">
         <div>
-          <button class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#addJobModal">Dodaj posao</button>
+          <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addJobModal">Dodaj posao</button>
         </div>
       </div>
        <div id="job-list" class="row">
@@ -77,7 +78,9 @@
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/jquery.validate.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="js/job-service.js"></script>
+<script src="js/worker-service.js"></script>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,7 +97,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
-        <button type="button" class="btn btn-primary save-todo-button" onclick="JobService.update()">Sačuvaj promjene</button>
+        <button type="button" class="btn btn-primary save-job-button" onclick="JobService.update()">Sačuvaj promjene</button>
       </div>
     </div>
   </div>
@@ -124,6 +127,57 @@
           <button type="submit" class="btn btn-primary">Potvrdi</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="workerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Dostupni radnici</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+
+            <div id="job-workers" class="list-group">
+              <div class="list-group-item">
+                <button class="btn btn-danger btn-sm float-end">delete</button>
+                <p class="list-group-item-text"></p>
+              </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+          <form id="add-worker-form" class="form">
+            <input name="worker_job_id" type="hidden" />
+            <div class="row" style="padding: 20px;">
+              <div class="col-sm-4">
+                <input name="worker_name" type="text" class="form-control required" placeholder="Name">
+              </div>
+              <div class="col-sm-4">
+                <input name="worker_email" type="text" class="form-control" placeholder="Email">
+              </div>
+              <div class="col-sm-4">
+                <input name="worker_city" type="text" class="form-control required" placeholder="City">
+              </div>
+              <div class="col-sm-4">
+                <input name="worker_phone_number" type="text" class="form-control required"style="margin-top:10px;" placeholder="Phone">
+              </div>
+              <div class="col-sm-4">
+                <input name="worker_address" type="text" class="form-control" style="margin-top:10px;" placeholder="Address">
+              </div>
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary mb-2" style="margin-top:10px;">Dodaj</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer"> </div>
     </div>
   </div>
 </div>
