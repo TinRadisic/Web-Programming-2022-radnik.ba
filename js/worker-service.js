@@ -4,6 +4,9 @@ var WorkerService = {
     $.ajax({
       url: 'rest/worker',
       type: 'POST',
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
       data: JSON.stringify(worker),
       contentType: "application/json",
       dataType: "json",
@@ -20,15 +23,27 @@ var WorkerService = {
 
   list_by_job_id: function(id){
     $("#job-workers").html('loading ...');
-    $.get("rest/job/"+id+"/worker", function(data) {
-      var html = "";
-      for(let i = 0; i < data.length; i++){
-        html += `<div class="list-group-item job-worker-`+data[i].id+`">
-          <button class="btn btn-danger btn-sm float-end" onclick="WorkerService.delete(`+data[i].id+`)">Obriši</button>
-          <p class="list-group-item-text">`+data[i].worker_name+', '+data[i].worker_city+', '+data[i].worker_phone_number+', '+data[i].worker_email+', '+data[i].worker_address+`</p>
-        </div>`;
-      }
-      $("#job-workers").html(html);
+
+    $.ajax({
+       url: "rest/job/"+id+"/worker",
+       type: "GET",
+       beforeSend: function(xhr){
+         xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+       },
+       success: function(data) {
+         var html = "";
+         for(let i = 0; i < data.length; i++){
+           html += `<div class="list-group-item job-worker-`+data[i].id+`">
+             <button class="btn btn-danger btn-sm float-end" onclick="WorkerService.delete(`+data[i].id+`)">Obriši</button>
+             <p class="list-group-item-text">`+data[i].worker_name+', '+data[i].worker_city+', '+data[i].worker_phone_number+', '+data[i].worker_email+', '+data[i].worker_address+`</p>
+           </div>`;
+         }
+         $("#job-workers").html(html);
+       },
+       error: function(XMLHttpRequest, textStatus, errorThrown) {
+         toastr.error(XMLHttpRequest.responseJSON.message);
+         UserService.logout();
+       }
     });
 
     // note id populate and form validation
@@ -56,6 +71,9 @@ var WorkerService = {
     $.ajax({
       url: 'rest/worker/'+id,
       type: 'DELETE',
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
       success: function(result) {
         toastr.success("Deleted !");
       },
