@@ -42,7 +42,7 @@
           </ul>
 
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-outline-light" type="button">Prijavi se ili Registruj</button>
+            <button class="btn btn-outline-light" type="button" onclick="UserService.logout()">Odjavi se</button>
           </div>
         </div>
       </div>
@@ -81,6 +81,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="js/job-service.js"></script>
 <script src="js/worker-service.js"></script>
+<script src="js/user-service.js"></script>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -183,5 +184,10 @@
 </div>
 
 <script>
-  JobService.init();
+  var token = localStorage.getItem("token");
+  if (token){
+   JobService.init();
+  }else{
+   window.location.replace("login.html");
+  }
 </script>
