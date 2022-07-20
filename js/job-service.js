@@ -6,6 +6,7 @@ var JobService = {
           JobService.add(job);
         }
       });
+
       JobService.list();
     },
 
@@ -23,13 +24,13 @@ var JobService = {
              html += `
              <div class="col-lg-3">
                <div class="card" style="margin-top:30px;">
-                 <img class="card-img-top" src="slikica.jpg" alt="Card image cap">
+                 <img class="card-img-top" src="slika1.jpg" alt="Card image cap">
                  <div class="card-body">
                    <h5 class="card-title">`+ data[i].job_name +`</h5>
                    <p class="card-text">`+ data[i].job_description +`</p>
                    <div class="btn-group" role="group">
-                     <button type="button" class="btn btn-primary job-button" onclick="JobService.get(`+data[i].id+`)">Uredi</button>
-                     <button type="button" class="btn btn-danger job-button" onclick="JobService.delete(`+data[i].id+`)">Obriši</button>
+                     <button  type="button" class="btn btn-primary job-button hidden" onclick="JobService.get(`+data[i].id+`)">Uredi</button>
+                     <button  type="button" class="btn btn-danger job-button hidden" onclick="JobService.delete(`+data[i].id+`)">Obriši</button>
                      <button type="button" class="btn btn-outline-primary job-button" onclick="WorkerService.list_by_job_id(`+data[i].id+`)">Svi radnici</button>
                    </div>
                  </div>
@@ -38,6 +39,12 @@ var JobService = {
              `;
            }
            $("#job-list").html(html);
+
+           let userInfo = UserService.parseJWT(localStorage.getItem("token"));
+           if(userInfo.r == "ADMIN"){
+
+             $('.job-button').removeClass("hidden");
+           }
          },
          error: function(XMLHttpRequest, textStatus, errorThrown) {
            toastr.error(XMLHttpRequest.responseJSON.message);

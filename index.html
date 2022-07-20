@@ -10,6 +10,9 @@
     .error{
       color:red;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -61,7 +64,7 @@
      <div class="container marketing" style="margin-top:30px;">
        <div class="row">
         <div>
-          <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addJobModal">Dodaj posao</button>
+          <button id="addjob" class="btn btn-primary btn-lg admin-panel hidden" data-bs-toggle="modal" data-bs-target="#addJobModal">Dodaj posao</button>
         </div>
       </div>
        <div id="job-list" class="row">
@@ -98,7 +101,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
-        <button type="button" class="btn btn-primary save-job-button" onclick="JobService.update()">Sačuvaj promjene</button>
+        <button id="updatejob" type="button" class="btn btn-primary save-job-button " onclick="JobService.update()">Sačuvaj promjene</button>
       </div>
     </div>
   </div>
@@ -153,7 +156,7 @@
         </div>
 
         <div class="row">
-          <form id="add-worker-form" class="form">
+          <form id="add-worker-form" class="form admin-panel hidden">
             <input name="worker_job_id" type="hidden" />
             <div class="row" style="padding: 20px;">
               <div class="col-sm-4">
@@ -184,10 +187,24 @@
 </div>
 
 <script>
-  var token = localStorage.getItem("token");
-  if (token){
-   JobService.init();
-  }else{
-   window.location.replace("login.html");
+var token = localStorage.getItem("token");
+if (token){
+
+ JobService.init();
+ loadMain();
+
+}else{
+ window.location.replace("login.html");
+}
+
+
+  function loadMain(){
+  let userInfo = UserService.parseJWT(localStorage.getItem("token"));
+  if(userInfo.r == "ADMIN"){
+
+    $(".admin-panel").removeClass("hidden");
+    }
   }
+
+
 </script>
