@@ -11,7 +11,7 @@ Flight::route('POST /login', function(){
     if (isset($user['id'])){
       if($user['password'] == $login['password']){
         unset($user['password']);
-        $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
+        $jwt = JWT::encode(["id" => $user["id"], "r" => $user["role"]], Config::JWT_SECRET(), 'HS256');
         Flight::json(['token' => $jwt]);
       }else{
         Flight::json(["message" => "Wrong password"], 404);
@@ -20,5 +20,10 @@ Flight::route('POST /login', function(){
       Flight::json(["message" => "User doesn't exist"], 404);
     }
 });
+Flight::route('POST /register', function(){
+  Flight::json(Flight::userDao()->add(Flight::request()->data->getData()));
+
+});
+
 
 ?>
