@@ -43,5 +43,8 @@ Flight::route('DELETE /worker/@id', function($id){
 Flight::route('GET /worker/@id/review', function($id){
   Flight::json(Flight::reviewService()->get_review_by_worker_id($id));
 });
+Flight::route('GET /search/@search', function($search){
+  Flight::json(Flight::workerService()->get_worker_by_search($search));
+});
 
 ?>
