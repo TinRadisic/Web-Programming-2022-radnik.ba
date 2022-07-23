@@ -21,7 +21,12 @@ Flight::route('POST /login', function(){
     }
 });
 Flight::route('POST /register', function(){
-  Flight::json(Flight::userDao()->add(Flight::request()->data->getData()));
+  try{
+    Flight::json(Flight::userDao()->add(Flight::request()->data->getData()));
+  }catch (\Exception $e) {
+    Flight::json(["message" => "Email is already in use"], 400);
+
+  }
 
 });
 
