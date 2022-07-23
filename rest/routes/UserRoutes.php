@@ -9,7 +9,7 @@ Flight::route('POST /login', function(){
     $login = Flight::request()->data->getData();
     $user = Flight::userDao()->get_user_by_email($login['email']);
     if (isset($user['id'])){
-      if($user['password'] == $login['password']){
+      if($user['password'] == md5($login['password'])){
         unset($user['password']);
         $jwt = JWT::encode(["id" => $user["id"], "r" => $user["role"]], Config::JWT_SECRET(), 'HS256');
         Flight::json(['token' => $jwt]);
