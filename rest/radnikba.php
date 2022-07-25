@@ -25,7 +25,7 @@ Flight::map('error', function(Exception $ex){
 Flight::route('/*', function(){
   //perform JWT decode
   $path = Flight::request()->url;
-  if ($path == '/login' || $path == '/register' ) return TRUE; // exclude login route from middleware
+  if ($path == '/login' || $path == '/register' || $path == '/docs.json' ) return TRUE; // exclude login route from middleware
 
   $headers = getallheaders();
   if (@!$headers['Authorization']){
@@ -41,6 +41,12 @@ Flight::route('/*', function(){
       return FALSE;
     }
   }
+});
+/* REST API documentation endpoint */
+Flight::route('GET /docs.json', function(){
+  $openapi = \OpenApi\scan('routes');
+  header('Content-Type: application/json');
+  echo $openapi->toJson();
 });
 
 require_once __DIR__.'/routes/WorkerRoutes.php';
